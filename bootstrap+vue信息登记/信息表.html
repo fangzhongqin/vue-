@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<link rel="stylesheet" type="text/css" href="bootstrap.min.css">
+</head>
+<script type="text/javascript" src="vue.js"></script>
+<script type="text/javascript">
+	window.onload=function(){
+		new Vue({
+			el:'#box',
+			data:{
+				myData:[],
+				username:'',
+				age:'',
+				//nowIndex:-100
+			},
+			methods:{
+				add: function(){
+					this.myData.push({name:this.username,
+						              age:this.age});
+					this.username='';
+					this.age='';
+				},
+				delate:function(n){
+					this.myData.splice(n,1);
+				},
+				delateAll:function(){
+					this.myData.splice(0);
+				}
+			}
+		});
+	};
+</script>
+<body>
+	<div class="container" id="box">
+		<form role="form">
+			<div class="form-group">
+				<label for="username">姓名：</label>
+				<input type="text" class="form-control" placeholder="请输入姓名" id="username" v-model="username">
+			</div>
+			<div class="form-group">
+				<label for="age">年龄：</label>
+				<input type="text" class="form-control" placeholder="请输入年龄" id="age" v-model="age">
+			</div>
+			<input type="button" class="btn btn-primary" name="添加" value="添加" v-on:click='add'>
+			<input type="reset" class="btn btn-danger" name="重置" value="重置">	
+		</form>
+		<hr>
+
+		<table class="table table-hover table-bordered">
+			<caption class="h2 text-center">用户信息表</caption>
+			<tr class="text-danger">
+				<th class="text-center">序号</th>
+				<th class="text-center">姓名</th>
+				<th class="text-center">年龄</th>
+				<th class="text-center">操作</th>
+			</tr>
+
+			<tr class="text-center" v-for="(item,index) in myData">
+				<td>{{index+1}}</td>
+				<td>{{item.name}}</td>
+				<td>{{item.age}}</td>
+				<td><button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#delate">删除</button></td>
+			</tr>
+
+			<!--模态框-->
+			<div class="modal fade" id="delate">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<!-- 头部 -->
+						<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">
+						    <span>&times;</span>
+						</button>
+						<h4 class="modal-title">提示</h4> </div>
+						<!-- 主体 -->
+						<div class="modal-body">
+						<p>确认删除吗？</p> </div>
+						<!-- 注脚 -->
+						<div class="modal-footer">
+						<button class="btn btn-default" data-dismiss="modal">取消</button>
+						<button class="btn btn-primary" data-dismiss="modal" v-on:click="delate">确定</button>
+	                    </div>
+                    </div>
+                </div>
+			</div>
+			
+			<tr v-show="myData.length!==0">
+				<td colspan="4"><button class="btn btn-danger pull-right" style="margin-right: 11.5%" data-toggle="modal" data-target="#delateAll">删除全部</button></td>
+			</tr>
+
+			<div class="modal fade" id="delateAll">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal">
+						    <span>&times;</span>
+						</button>
+						<h4 class="modal-title">提示</h4> 
+						</div>
+						<div class="modal-body">
+							<p>确定要删除全部人的信息吗？</p>
+						</div>
+						<div class="modal-footer">
+							<button class="btn btn-default" data-dismiss="modal">取消</button>
+							<button class="btn btn-danger" data-dismiss="modal" v-on:click="delateAll">确定</button>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<tr v-show="myData.length===0"><td colspan="4" class="text-center">暂无信息...</td></tr>
+
+		</table>
+	</div>
+</body>
+<script type="text/javascript" src="jquery-3.2.0.min.js"></script>
+<script type="text/javascript" src="bootstrap.min.js"></script>
+</html>
